@@ -3,10 +3,13 @@ package boardlayer;
 public class Board {
     private Integer rows;
     private Integer columns;
+    private Piece[][] piece;
 
-//    public boolean positionExists(Position position){
-//
-//    }
+    public Board(Integer rows, Integer columns) {
+        setRows(rows);
+        setColumns(columns);
+        this.piece = new Piece[getRows()][getColumns()];
+    }
 
     public Integer getColumns() {
         return columns;
