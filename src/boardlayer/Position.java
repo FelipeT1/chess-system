@@ -27,8 +27,8 @@ public class Position {
 
     @Override
     public String toString() {
-        return "Position " +
-                "row= " + row +
-                ", col= " + col;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Position: ").append(getRow()).append(", ").append(getCol()).append(".\n");
+        return sb.toString();
     }
 }
