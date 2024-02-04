@@ -1,7 +1,6 @@
 package chesslayer;
 
 import boardlayer.Board;
-import boardlayer.Position;
 import chesslayer.enums.Color;
 import chesslayer.pieces.King;
 import chesslayer.pieces.Rook;
@@ -14,7 +13,7 @@ public class ChessMatch {
     private boolean isCheckMate;
     private ChessPiece enPassantVulnerable;
     private ChessPiece promoted;
-    private Board board;
+    protected Board board;
 
     public ChessMatch() {
         this.board = new Board(SIZE, SIZE);
@@ -33,10 +32,15 @@ public class ChessMatch {
         }
         return matrix;
     }
-    // Inicia a partida colocando as peças no tabuleiro
+    // Coloca a peça na posição equivalente de ChessPosition
+    public void placeNewPieceAsChessPosition(char col, int row, ChessPiece piece){
+        board.placePiece(piece, new ChessPosition(col, row).toPosition());
+    }
+
+    // Inicia a partida colocando as peças no tabuleiro padrão (0-7)
     private void initialSetup(){
-        board.placePiece(new Rook(board,Color.WHITE), new Position(2,1));
-        board.placePiece(new King(board,Color.WHITE), new Position(0,5));
-        board.placePiece(new King(board,Color.WHITE), new Position(2,5));
+        placeNewPieceAsChessPosition('b',6, new Rook(board, Color.WHITE));
+        placeNewPieceAsChessPosition('e',8, new King(board, Color.BLACK));
+        placeNewPieceAsChessPosition('e',1, new King(board, Color.WHITE));
     }
 }
