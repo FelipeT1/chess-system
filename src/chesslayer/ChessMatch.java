@@ -39,8 +39,17 @@ public class ChessMatch {
 
     // Inicia a partida colocando as peças
     private void initialSetup(){
-        placeNewPieceAsChessPosition('b',6, new Rook(board, Color.WHITE));
-        placeNewPieceAsChessPosition('e',8, new King(board, Color.BLACK));
-        placeNewPieceAsChessPosition('e',1, new King(board, Color.WHITE));
+        placeNewPieceAsChessPosition('c', 2, new Rook(board, Color.YELLOW));
+        placeNewPieceAsChessPosition('d', 2, new Rook(board, Color.YELLOW));
+        placeNewPieceAsChessPosition('e', 2, new Rook(board, Color.YELLOW));
+        placeNewPieceAsChessPosition('e', 1, new Rook(board, Color.YELLOW));
+        placeNewPieceAsChessPosition('d', 1, new King(board, Color.YELLOW));
+
+        placeNewPieceAsChessPosition('c', 7, new Rook(board, Color.GREEN));
+        placeNewPieceAsChessPosition('c', 8, new Rook(board, Color.GREEN));
+        placeNewPieceAsChessPosition('d', 7, new Rook(board, Color.GREEN));
+        placeNewPieceAsChessPosition('e', 7, new Rook(board, Color.GREEN));
+        placeNewPieceAsChessPosition('e', 8, new Rook(board, Color.GREEN));
+        placeNewPieceAsChessPosition('d', 8, new King(board, Color.GREEN));
     }
 }
