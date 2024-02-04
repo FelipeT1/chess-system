@@ -37,7 +37,7 @@ public class ChessMatch {
         board.placePiece(piece, new ChessPosition(col, row).toPosition());
     }
 
-    // Inicia a partida colocando as peças no tabuleiro padrão (0-7)
+    // Inicia a partida colocando as peças
     private void initialSetup(){
         placeNewPieceAsChessPosition('b',6, new Rook(board, Color.WHITE));
         placeNewPieceAsChessPosition('e',8, new King(board, Color.BLACK));

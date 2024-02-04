@@ -4,7 +4,7 @@ import boardlayer.Position;
 import chesslayer.exceptions.ChessException;
 
 public class ChessPosition {
-    final private int SIZE = 8;
+    final private static int SIZE = 8;
     private char column;
     private int row;
 
@@ -19,9 +19,10 @@ public class ChessPosition {
     }
 
     // Converte position (numero-numero) para ChessPosition (letra-numero)
-    protected ChessPosition fromPosition(Position position){
+    protected static ChessPosition fromPosition(Position position){
         // Pois se posRow == 0 então chessRow == 8 (ambos no começo)
-        int chessRow = Math.abs(position.getRow() - this.row);
+//        int chessRow = Math.abs(position.getRow() - this.row);
+        int chessRow = SIZE - position.getRow();
         // 'a' -> U+0061 até 'h' -> U+0068
         // '1' -> U+0031 então '0' + '1' == 'a', '1' + '1' == 'b', ...
         char chessCol = (char) (position.getCol() + '1');
