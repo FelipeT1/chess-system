@@ -33,4 +33,10 @@ public class Board {
     public Piece piece(Position position){
         return this.piece[position.getRow()][position.getCol()];
     }
+    public void placePiece(Piece piece, Position position){
+        this.piece[position.getRow()][position.getCol()] = piece;
+        // Atributo acessível por ser protected.
+        // O atributo position desse objeto peça não será mais nulo
+        piece.position = position;
+    }
 }

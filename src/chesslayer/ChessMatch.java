@@ -1,7 +1,10 @@
 package chesslayer;
 
 import boardlayer.Board;
+import boardlayer.Position;
 import chesslayer.enums.Color;
+import chesslayer.pieces.King;
+import chesslayer.pieces.Rook;
 
 public class ChessMatch {
     final private int SIZE = 8;
@@ -15,6 +18,7 @@ public class ChessMatch {
 
     public ChessMatch() {
         this.board = new Board(SIZE, SIZE);
+        initialSetup();
     }
     
     // Feito para que o programa conheça apenas a chesslayer, por isso
@@ -28,5 +32,10 @@ public class ChessMatch {
             }
         }
         return matrix;
+    }
+    // Inicia a partida colocando as peças no tabuleiro
+    private void initialSetup(){
+        board.placePiece(new Rook(board,Color.WHITE), new Position(2,1));
+        board.placePiece(new King(board,Color.WHITE), new Position(0,5));
     }
 }
