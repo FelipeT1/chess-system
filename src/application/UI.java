@@ -6,7 +6,9 @@ import chesslayer.ChessPosition;
 import chesslayer.enums.Color;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class UI {
     // https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
@@ -50,8 +52,22 @@ public class UI {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-    public static void printMatch(ChessMatch chessMatch){
+    public static void printCapturedPieces(List<ChessPiece> capturedPieces){
+        System.out.println("Captured Pieces: ");
+        List<ChessPiece> yellow = capturedPieces.stream().filter(x->x.getColor().equals(Color.YELLOW)).collect(Collectors.toList());
+        List<ChessPiece> green = capturedPieces.stream().filter(x->x.getColor().equals(Color.GREEN)).collect(Collectors.toList());
+        System.out.print(ANSI_YELLOW );
+        System.out.printf(yellow.toString());
+        System.out.println(ANSI_RESET);
+
+        System.out.print(ANSI_GREEN );
+        System.out.printf(green.toString());
+        System.out.println(ANSI_RESET);
+
+    }
+    public static void printMatch(ChessMatch chessMatch, List<ChessPiece> capturedPieces){
         printBoard(chessMatch.getPieces());
+        printCapturedPieces(capturedPieces);
         System.out.printf("Turno: %d\n", chessMatch.getTurn());
         if(chessMatch.getCurrentPlayer().equals(Color.YELLOW)){
             System.out.printf(ANSI_YELLOW + "Player : %s\n", chessMatch.getCurrentPlayer() + ANSI_RESET);

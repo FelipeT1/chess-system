@@ -8,6 +8,9 @@ import chesslayer.exceptions.ChessException;
 import chesslayer.pieces.King;
 import chesslayer.pieces.Rook;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChessMatch {
     final private int SIZE = 8;
     private int turn;
@@ -17,6 +20,8 @@ public class ChessMatch {
     private ChessPiece enPassantVulnerable;
     private ChessPiece promoted;
     protected Board board;
+    public List<Piece> piecesOnTheBoard = new ArrayList<>();
+    public List<Piece> capturedPieces = new ArrayList<>();
 
     public ChessMatch() {
         this.board = new Board(SIZE, SIZE);
@@ -65,6 +70,10 @@ public class ChessMatch {
     public Piece makeMove(Position sourcePosition, Position targetPosition){
         Piece pieceToBeMoved = board.removePiece(sourcePosition);
         Piece capturedPiece = board.removePiece(targetPosition);
+        if(capturedPiece!=null){
+            capturedPieces.add(capturedPiece);
+            piecesOnTheBoard.remove(capturedPiece);
+        }
         board.placePiece(pieceToBeMoved, targetPosition);
         return capturedPiece;
     }
@@ -91,6 +100,7 @@ public class ChessMatch {
     // Coloca a peça na posição equivalente de ChessPosition
     public void placeNewPieceAsChessPosition(char col, int row, ChessPiece piece){
         board.placePiece(piece, new ChessPosition(col, row).toPosition());
+        piecesOnTheBoard.add(piece);
     }
     // Inicia a partida colocando as peças
     private void initialSetup(){
