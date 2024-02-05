@@ -58,6 +58,7 @@ public class ChessMatch {
     // Inicia a partida colocando as peças
     private void initialSetup(){
         placeNewPieceAsChessPosition('c', 2, new Rook(board, Color.YELLOW));
+        placeNewPieceAsChessPosition('c', 1, new Rook(board, Color.YELLOW));
         placeNewPieceAsChessPosition('d', 2, new Rook(board, Color.YELLOW));
         placeNewPieceAsChessPosition('e', 2, new Rook(board, Color.YELLOW));
         placeNewPieceAsChessPosition('e', 1, new Rook(board, Color.YELLOW));

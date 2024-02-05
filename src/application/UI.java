@@ -39,9 +39,15 @@ public class UI {
             return new ChessPosition(chessCol,chessrow);
         }
         catch (RuntimeException e){
-            throw new InputMismatchException("Error in ChessPosition: Valores válidos são de a1 até h8");
+            throw new InputMismatchException("Error in UIChessPosition: Valores válidos são de a1 até h8");
         }
 
+    }
+    // https://stackoverflow.com/questions/2979383/java-clear-the-console
+    // Só funcionará em terminais que suportem códigos ANSI
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     public static void printBoard(ChessPiece[][] pieces){
