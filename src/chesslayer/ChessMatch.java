@@ -35,17 +35,20 @@ public class ChessMatch {
         }
         return matrix;
     }
-    public void makeMove(Position start, Position end){
-
+    public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition){
+        validateSourcePosition(sourcePosition.toPosition());
+        return (ChessPiece) makeMove(sourcePosition.toPosition(), targetPosition.toPosition());
     }
-    public void performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition){
-        if(!board.thereIsAPiece(sourcePosition.toPosition())){
+    public Piece makeMove(Position sourcePosition, Position targetPosition){
+        Piece pieceToBeMoved = board.removePiece(sourcePosition);
+        Piece capturedPiece = board.removePiece(targetPosition);
+        board.placePiece(pieceToBeMoved, targetPosition);
+        return capturedPiece;
+    }
+    public  void validateSourcePosition(Position position){
+        if(!board.thereIsAPiece(position)){
             throw new ChessException("Error moving chess piece: there is no piece in start position");
         }
-        Piece piece = board.piece(sourcePosition.toPosition());
-        board.removePiece(sourcePosition.toPosition());
-        board.placePiece(piece, targetPosition.toPosition());
-
     }
     // Coloca a peça na posição equivalente de ChessPosition
     public void placeNewPieceAsChessPosition(char col, int row, ChessPiece piece){
