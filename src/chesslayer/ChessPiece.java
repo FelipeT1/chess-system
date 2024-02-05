@@ -2,6 +2,7 @@ package chesslayer;
 
 import boardlayer.Board;
 import boardlayer.Piece;
+import boardlayer.Position;
 import chesslayer.enums.Color;
 
 // Classe genérica demais
@@ -23,5 +24,9 @@ public abstract class ChessPiece extends Piece {
     }
 
     public abstract boolean[][] possibleMoves();
+    protected boolean isThereOpponentPiece(Position position){
+        ChessPiece chessPiece = (ChessPiece) getBoard().piece(position);
+        return chessPiece != null && !chessPiece.getColor().equals(this.color);
+    }
 
 }

@@ -84,10 +84,6 @@ public class Board {
     }
 
     public boolean positionExists(Position position) {
-        // Verifica se há uma peça na posição.
-        // Se houver uma peça a matriz não terá um null alocado
-        // Se a expressão for diferente de null é pq é True, há uma peça
-        // Utiliza a sobrecarga de piece para verificar esse objeto se é nulo ou não
         return positionExists(position.getRow(), position.getCol());
     }
 

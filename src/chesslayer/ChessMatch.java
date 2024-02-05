@@ -37,6 +37,7 @@ public class ChessMatch {
     }
     public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition){
         validateSourcePosition(sourcePosition.toPosition());
+        validateTargetPosition(sourcePosition.toPosition(),targetPosition.toPosition());
         return (ChessPiece) makeMove(sourcePosition.toPosition(), targetPosition.toPosition());
     }
     public Piece makeMove(Position sourcePosition, Position targetPosition){
@@ -45,13 +46,22 @@ public class ChessMatch {
         board.placePiece(pieceToBeMoved, targetPosition);
         return capturedPiece;
     }
-    public  void validateSourcePosition(Position position){
+    public void validateSourcePosition(Position position){
         if(!board.thereIsAPiece(position)){
             throw new ChessException("Error moving chess piece: there is no piece in start position");
         }
         if(!board.piece(position).isMovingPossible()){
             throw new ChessException("Error moving chess piece: this piece cannot move");
         }
+    }
+    public void validateTargetPosition(Position sourcePosition, Position targetPosition){
+        ChessPiece p = (ChessPiece) board.piece(sourcePosition);
+        // utiliza o hook method da classe abstrata Piece
+        // que já utiliza o método especializado na subclasse
+        if(!p.possibleMove(targetPosition)){
+            throw new ChessException("Error moving chess piece: target position is not a valid move");
+        }
+
     }
     // Coloca a peça na posição equivalente de ChessPosition
     public void placeNewPieceAsChessPosition(char col, int row, ChessPiece piece){
