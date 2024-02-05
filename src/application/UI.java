@@ -1,5 +1,6 @@
 package application;
 
+import chesslayer.ChessMatch;
 import chesslayer.ChessPiece;
 import chesslayer.ChessPosition;
 import chesslayer.enums.Color;
@@ -49,7 +50,16 @@ public class UI {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-
+    public static void printMatch(ChessMatch chessMatch){
+        printBoard(chessMatch.getPieces());
+        System.out.printf("Turno: %d\n", chessMatch.getTurn());
+        if(chessMatch.getCurrentPlayer().equals(Color.YELLOW)){
+            System.out.printf(ANSI_YELLOW + "Player : %s\n", chessMatch.getCurrentPlayer() + ANSI_RESET);
+        }
+        else{
+            System.out.printf(ANSI_GREEN + "Player : %s\n", chessMatch.getCurrentPlayer() + ANSI_RESET);
+        }
+    }
     public static void printBoard(ChessPiece[][] pieces){
         for(int i = 0; i < pieces.length ; i++){
             System.out.printf("%d  ", pieces.length-i);

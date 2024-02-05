@@ -10,7 +10,7 @@ import chesslayer.pieces.Rook;
 
 public class ChessMatch {
     final private int SIZE = 8;
-    private Integer turn;
+    private int turn;
     private Color currentPlayer;
     private boolean isCheck;
     private boolean isCheckMate;
@@ -20,9 +20,25 @@ public class ChessMatch {
 
     public ChessMatch() {
         this.board = new Board(SIZE, SIZE);
+        this.turn = 1;
+        // No xadrez é regra que as peças brancas comecem
+        // Entenda Yellow como branco aqui
+        this.currentPlayer = Color.YELLOW;
         initialSetup();
     }
-    
+    public int getTurn(){
+        return this.turn;
+    }
+    private void setTurn(int turn){
+        this.turn = turn;
+    }
+    private void nextTurn(){
+        setTurn(getTurn()+1);
+        currentPlayer = getTurn() % 2 == 0 ? Color.GREEN : Color.YELLOW;
+    }
+    public Color getCurrentPlayer(){
+        return this.currentPlayer;
+    }
     // Feito para que o programa conheça apenas a chesslayer, por isso
     // O downcast para ChessPiece
     // Como tudo é null, o downcast não causará uma excessão de castClassException
@@ -43,6 +59,7 @@ public class ChessMatch {
     public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition){
         validateSourcePosition(sourcePosition.toPosition());
         validateTargetPosition(sourcePosition.toPosition(),targetPosition.toPosition());
+        nextTurn();
         return (ChessPiece) makeMove(sourcePosition.toPosition(), targetPosition.toPosition());
     }
     public Piece makeMove(Position sourcePosition, Position targetPosition){
@@ -54,6 +71,9 @@ public class ChessMatch {
     public void validateSourcePosition(Position position){
         if(!board.thereIsAPiece(position)){
             throw new ChessException("Error moving chess piece: there is no piece in start position");
+        }
+        if(!((ChessPiece) board.piece(position)).getColor().equals(this.currentPlayer)){
+            throw new ChessException("Error moving chess piece: this is not "+ ((ChessPiece) board.piece(position)).getColor()+"'s turn");
         }
         if(!board.piece(position).isMovingPossible()){
             throw new ChessException("Error moving chess piece: this piece cannot move");
