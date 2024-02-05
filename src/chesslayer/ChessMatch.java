@@ -1,7 +1,10 @@
 package chesslayer;
 
 import boardlayer.Board;
+import boardlayer.Piece;
+import boardlayer.Position;
 import chesslayer.enums.Color;
+import chesslayer.exceptions.ChessException;
 import chesslayer.pieces.King;
 import chesslayer.pieces.Rook;
 
@@ -31,6 +34,18 @@ public class ChessMatch {
             }
         }
         return matrix;
+    }
+    public void makeMove(Position start, Position end){
+
+    }
+    public void performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition){
+        if(!board.thereIsAPiece(sourcePosition.toPosition())){
+            throw new ChessException("Error moving chess piece: there is no piece in start position");
+        }
+        Piece piece = board.piece(sourcePosition.toPosition());
+        board.removePiece(sourcePosition.toPosition());
+        board.placePiece(piece, targetPosition.toPosition());
+
     }
     // Coloca a peça na posição equivalente de ChessPosition
     public void placeNewPieceAsChessPosition(char col, int row, ChessPiece piece){

@@ -5,7 +5,7 @@ import boardlayer.exceptions.BoardException;
 public class Board {
     private Integer rows;
     private Integer columns;
-    private Piece[][] piece;
+    private Piece[][] pieces;
 
     public Board(Integer rows, Integer columns) {
         // Programação defensiva, evitando erros óbvios
@@ -14,7 +14,7 @@ public class Board {
         }
         setRows(rows);
         setColumns(columns);
-        this.piece = new Piece[getRows()][getColumns()];
+        this.pieces = new Piece[getRows()][getColumns()];
     }
 
     public Integer getColumns() {
@@ -33,32 +33,44 @@ public class Board {
         this.columns = columns;
     }
 
-    public Piece[][] getPiece() {
-        return piece;
+    public Piece[][] getPieces() {
+        return pieces;
     }
 
     public Piece piece(int row, int col) {
         if (!positionExists(row, col)) {
             throw new BoardException("Error accessing piece: position does not exist");
         }
-        return this.piece[row][col];
+        return this.pieces[row][col];
     }
 
     public Piece piece(Position position) {
         if (!positionExists(position)) {
             throw new BoardException("Error accessing piece: position does not exist");
         }
-        return this.piece[position.getRow()][position.getCol()];
+        return this.pieces[position.getRow()][position.getCol()];
     }
-
+    // Coloca um Piece com um position na matriz Piece[][]
     public void placePiece(Piece piece, Position position) {
         if (thereIsAPiece(position)) {
             throw new BoardException("Error placing piece: a piece already exists in this position " + position);
         }
-        this.piece[position.getRow()][position.getCol()] = piece;
+        this.pieces[position.getRow()][position.getCol()] = piece;
         // Atributo acessível por ser protected.
         // O atributo position desse objeto peça não será mais nulo
         piece.position = position;
+    }
+    // Retorna um Piece com position null e retira ele da matriz Piece[][]
+    public Piece removePiece(Position position){
+        if(!thereIsAPiece(position)){
+            return null;
+        }
+        Piece auxiliar = piece(position);
+        // peça retirada do tabuleiro
+        auxiliar.position = null;
+        this.pieces[position.getRow()][position.getCol()] = null;
+
+        return  auxiliar;
     }
 
     // Verifica se a posição EXISTE no tabuleiro
@@ -78,6 +90,7 @@ public class Board {
         // Utiliza a sobrecarga de piece para verificar esse objeto se é nulo ou não
         return positionExists(position.getRow(), position.getCol());
     }
+
     public boolean thereIsAPiece(Position position){
         // Para testar duas coisas em um método só
         // Para uma peça existir a posição deve existir
@@ -86,4 +99,5 @@ public class Board {
         }
         return piece(position) != null;
     }
+
 }

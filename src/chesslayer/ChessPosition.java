@@ -31,7 +31,7 @@ public class ChessPosition {
     public ChessPosition(char column, int row) {
         // Programação defensiva, para evitar erros óbvios
         if(column < 'a' || column > 'h' || row < 1 || row > SIZE){
-            throw new ChessException("Error in ChessPosition: Valores válido de a1 até h8");
+            throw new ChessException("Error in ChessPosition: Valores válidos são de a1 até h8");
         }
         this.column = column;
         this.row = row;
