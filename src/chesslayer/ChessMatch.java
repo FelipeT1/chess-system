@@ -49,6 +49,9 @@ public class ChessMatch {
         if(!board.thereIsAPiece(position)){
             throw new ChessException("Error moving chess piece: there is no piece in start position");
         }
+        if(!board.piece(position).isMovingPossible()){
+            throw new ChessException("Error moving chess piece: this piece cannot move");
+        }
     }
     // Coloca a peça na posição equivalente de ChessPosition
     public void placeNewPieceAsChessPosition(char col, int row, ChessPiece piece){

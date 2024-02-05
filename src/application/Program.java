@@ -1,7 +1,6 @@
 package application;
 
 import chesslayer.ChessMatch;
-import chesslayer.ChessPiece;
 import chesslayer.ChessPosition;
 import chesslayer.exceptions.ChessException;
 
