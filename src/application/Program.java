@@ -38,11 +38,9 @@ public class Program {
             }
             catch (ChessException e){
                 System.out.println(e.getMessage());
-                sc.nextLine();
             }
             catch (RuntimeException e){
                 System.out.println(e.getMessage());
-                sc.nextLine();
             }
         }
     }

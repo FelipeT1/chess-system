@@ -69,6 +69,9 @@ public class UI {
         printBoard(chessMatch.getPieces());
         printCapturedPieces(capturedPieces);
         System.out.printf("Turno: %d\n", chessMatch.getTurn());
+        if(chessMatch.isCheck()){
+            System.out.println("JOGADOR " + chessMatch.getCurrentPlayer() +  " CHECK!");
+        }
         if(chessMatch.getCurrentPlayer().equals(Color.YELLOW)){
             System.out.printf(ANSI_YELLOW + "Player : %s\n", chessMatch.getCurrentPlayer() + ANSI_RESET);
         }

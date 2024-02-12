@@ -22,7 +22,9 @@ public abstract class ChessPiece extends Piece {
     public Color getColor() {
         return color;
     }
-
+    public ChessPosition getChessPosition(){
+        return ChessPosition.fromPosition(position);
+    }
     public abstract boolean[][] possibleMoves();
     protected boolean isThereOpponentPiece(Position position){
         ChessPiece chessPiece = (ChessPiece) getBoard().piece(position);

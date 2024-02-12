@@ -10,6 +10,7 @@ import chesslayer.pieces.Rook;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChessMatch {
     final private int SIZE = 8;
@@ -31,6 +32,11 @@ public class ChessMatch {
         this.currentPlayer = Color.YELLOW;
         initialSetup();
     }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
     public int getTurn(){
         return this.turn;
     }
@@ -43,6 +49,30 @@ public class ChessMatch {
     }
     public Color getCurrentPlayer(){
         return this.currentPlayer;
+    }
+    private Color opponent(Color color){
+        return color.equals(Color.YELLOW) ? Color.GREEN : Color.YELLOW;
+    }
+    // Para localizar o rei
+    private ChessPiece kingColor(Color color){
+        List<Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor().equals(color)).collect(Collectors.toList());
+        for(Piece p : list){
+            if(p instanceof King){
+                return (ChessPiece) p;
+            }
+        }
+        throw new IllegalStateException("THERE IS NO KING " + color + " IN THIS BOARD. IS CHESS A REPLUBIC NOW?");
+    }
+    // Verifica se o rei dessa cor está em check
+    private boolean testCheck(Color color){
+        Position kingPosition = kingColor(color).getChessPosition().toPosition();
+        List<Piece> opponentPieces = piecesOnTheBoard.stream().filter(x->((ChessPiece)x).getColor().equals(opponent(color))).collect(Collectors.toList());
+        for(Piece opponent : opponentPieces){
+            if(opponent.possibleMove(kingPosition)){
+                return true;
+            }
+        }
+        return false;
     }
     // Feito para que o programa conheça apenas a chesslayer, por isso
     // O downcast para ChessPiece
@@ -64,18 +94,38 @@ public class ChessMatch {
     public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition){
         validateSourcePosition(sourcePosition.toPosition());
         validateTargetPosition(sourcePosition.toPosition(),targetPosition.toPosition());
+        Piece capturedPiece = makeMove(sourcePosition.toPosition(), targetPosition.toPosition());
+        if(testCheck(getCurrentPlayer())){
+            undoMove(sourcePosition.toPosition(), targetPosition.toPosition(), capturedPiece);
+            throw new ChessException("Error moving chess piece: Your " + getCurrentPlayer() + " king would be in check. Illegal movement.");
+        }
+        // checa se o oponente ficou em xeque
+        // se for true, então a partida está em xeque
+        isCheck = testCheck(opponent(getCurrentPlayer()));
+
         nextTurn();
-        return (ChessPiece) makeMove(sourcePosition.toPosition(), targetPosition.toPosition());
+        return (ChessPiece) capturedPiece;
     }
     public Piece makeMove(Position sourcePosition, Position targetPosition){
         Piece pieceToBeMoved = board.removePiece(sourcePosition);
         Piece capturedPiece = board.removePiece(targetPosition);
-        if(capturedPiece!=null){
+        if(capturedPiece != null){
             capturedPieces.add(capturedPiece);
             piecesOnTheBoard.remove(capturedPiece);
         }
         board.placePiece(pieceToBeMoved, targetPosition);
         return capturedPiece;
+    }
+    // Se uma jogada colocar seu Rei em Xeque esta deve ser desfeita
+    // Se possível
+    public void undoMove(Position sourcePosition, Position targetPosition, Piece capturedPiece){
+        Piece p = board.removePiece(targetPosition);
+        board.placePiece(p, sourcePosition);
+        if(capturedPiece != null){
+            board.placePiece(capturedPiece, targetPosition);
+            piecesOnTheBoard.add(capturedPiece);
+            capturedPieces.remove(capturedPiece);
+        }
     }
     public void validateSourcePosition(Position position){
         if(!board.thereIsAPiece(position)){
@@ -117,5 +167,6 @@ public class ChessMatch {
         placeNewPieceAsChessPosition('e', 7, new Rook(board, Color.GREEN));
         placeNewPieceAsChessPosition('e', 8, new Rook(board, Color.GREEN));
         placeNewPieceAsChessPosition('d', 8, new King(board, Color.GREEN));
+
     }
 }
