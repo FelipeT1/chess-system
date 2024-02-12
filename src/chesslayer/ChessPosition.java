@@ -21,11 +21,9 @@ public class ChessPosition {
     // Converte position (numero-numero) para ChessPosition (letra-numero)
     protected static ChessPosition fromPosition(Position position){
         // Pois se posRow == 0 então chessRow == 8 (ambos no começo)
-//        int chessRow = Math.abs(position.getRow() - this.row);
         int chessRow = SIZE - position.getRow();
         // 'a' -> U+0061 até 'h' -> U+0068
-        // '1' -> U+0031 então '0' + '1' == 'a', '1' + '1' == 'b', ...
-        char chessCol = (char) (position.getCol() + '1');
+        char chessCol = (char) (position.getCol() + 'a');
         return new ChessPosition(chessCol, chessRow);
     }
     public ChessPosition(char column, int row) {

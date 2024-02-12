@@ -37,11 +37,9 @@ public class Program {
                 UI.clearScreen();
             }
             catch (ChessException e){
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
-            catch (RuntimeException e){
-                System.out.println(e.getMessage());
-            }
+
         }
     }
 }

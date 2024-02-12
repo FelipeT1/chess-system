@@ -95,6 +95,7 @@ public class ChessMatch {
         validateSourcePosition(sourcePosition.toPosition());
         validateTargetPosition(sourcePosition.toPosition(),targetPosition.toPosition());
         Piece capturedPiece = makeMove(sourcePosition.toPosition(), targetPosition.toPosition());
+        // checa se o seu movimento te põe em cheque
         if(testCheck(getCurrentPlayer())){
             undoMove(sourcePosition.toPosition(), targetPosition.toPosition(), capturedPiece);
             throw new ChessException("Error moving chess piece: Your " + getCurrentPlayer() + " king would be in check. Illegal movement.");
