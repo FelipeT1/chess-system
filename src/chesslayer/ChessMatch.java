@@ -196,12 +196,7 @@ public class ChessMatch {
     // Inicia a partida colocando as peças
     private void initialSetup(){
         placeNewPieceAsChessPosition('a', 1, new Rook(board, Color.YELLOW));
-        placeNewPieceAsChessPosition('b', 1, new Knight(board, Color.YELLOW));
-        placeNewPieceAsChessPosition('c', 1, new Bishop(board, Color.YELLOW));
-        placeNewPieceAsChessPosition('e', 1, new King(board, Color.YELLOW));
-        placeNewPieceAsChessPosition('d', 1, new Queen(board, Color.YELLOW));
-        placeNewPieceAsChessPosition('f', 1, new Bishop(board, Color.YELLOW));
-        placeNewPieceAsChessPosition('g', 1, new Knight(board, Color.YELLOW));
+        placeNewPieceAsChessPosition('e', 1, new King(board, Color.YELLOW,this));
         placeNewPieceAsChessPosition('h', 1, new Rook(board, Color.YELLOW));
         placeNewPieceAsChessPosition('a', 2, new Pawn(board, Color.YELLOW));
         placeNewPieceAsChessPosition('b', 2, new Pawn(board, Color.YELLOW));
@@ -215,7 +210,7 @@ public class ChessMatch {
         placeNewPieceAsChessPosition('a', 8, new Rook(board, Color.GREEN));
         placeNewPieceAsChessPosition('b', 8, new Knight(board, Color.GREEN));
         placeNewPieceAsChessPosition('c', 8, new Bishop(board, Color.GREEN));
-        placeNewPieceAsChessPosition('e', 8, new King(board, Color.GREEN));
+        placeNewPieceAsChessPosition('e', 8, new King(board, Color.GREEN, this));
         placeNewPieceAsChessPosition('d', 8, new Queen(board, Color.GREEN));
         placeNewPieceAsChessPosition('f', 8, new Bishop(board, Color.GREEN));
         placeNewPieceAsChessPosition('g', 8, new Knight(board, Color.GREEN));

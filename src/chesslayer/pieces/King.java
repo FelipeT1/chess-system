@@ -2,12 +2,19 @@ package chesslayer.pieces;
 
 import boardlayer.Board;
 import boardlayer.Position;
+import chesslayer.ChessMatch;
 import chesslayer.ChessPiece;
 import chesslayer.enums.Color;
 
 public class King extends ChessPiece {
-    public King(Board board, Color color) {
+    private ChessMatch chessMatch;
+    public King(Board board, Color color, ChessMatch chessMatch) {
         super(board, color);
+        this.chessMatch = chessMatch;
+    }
+    public boolean testIfRookIsCastling(Position position){
+        ChessPiece p = (ChessPiece) getBoard().piece(position);
+        return (p instanceof Rook) && (p.getColor().equals(getColor())) && (p.getMoveCount() == 0);
     }
 
     @Override
@@ -54,8 +61,33 @@ public class King extends ChessPiece {
         if(getBoard().positionExists(p) && canMove(p)){
             moves[p.getRow()][p.getCol()] = true;
         }
+
+        // #Special move - Roque = Castling
+        // Small castling
+        p.setValues(position.getRow(), position.getCol() + 3);
+        if(testIfRookIsCastling(p)){
+            Position p1 = new Position(position.getRow(), position.getCol() + 1);
+            Position p2 = new Position(position.getRow(), position.getCol() + 2);
+            if(!getBoard().thereIsAPiece(p1) && !getBoard().thereIsAPiece(p2)){
+                moves[position.getRow()][position.getCol() + 2] = true;
+            }
+
+        }
+
+        // Big castling
+        p.setValues(position.getRow(), position.getCol() - 4);
+        if(testIfRookIsCastling(p)){
+            Position p1 = new Position(position.getRow(), position.getCol() - 1);
+            Position p2 = new Position(position.getRow(), position.getCol() - 2);
+            Position p3 = new Position(position.getRow(), position.getCol() - 3);
+            if(!getBoard().thereIsAPiece(p1) && !getBoard().thereIsAPiece(p2) && !getBoard().thereIsAPiece(p3)){
+                moves[position.getRow()][position.getCol() - 2] = true;
+            }
+
+        }
         return moves;
     }
+
 
     private boolean canMove(Position p) {
         return !getBoard().thereIsAPiece(p) || isThereOpponentPiece(p);
