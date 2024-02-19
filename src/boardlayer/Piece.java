@@ -1,6 +1,11 @@
 package boardlayer;
 
 public abstract class Piece {
+    /*
+    Essa classe é genérica e existe para propósitos de organização. Ela representa o estado mais abstrato de uma peça de xadrez.
+
+    OOP: Associação (Piece tem um Board e tem um Position), Encapsulamento.
+     */
     protected Position position;
     private Board board;
     public Piece(Board board) {

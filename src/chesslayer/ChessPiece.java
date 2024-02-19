@@ -22,6 +22,7 @@ public abstract class ChessPiece extends Piece {
     public Color getColor() {
         return color;
     }
+    // Isso é feito pois o atributo position de Piece não deve ser diretamente acessado por essa camada chesslayer
     public ChessPosition getChessPosition(){
         return ChessPosition.fromPosition(position);
     }

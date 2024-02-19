@@ -13,6 +13,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ChessMatch {
+    /*
+    Essa classe contém a partida de xadrez, a lógica de funcionamento se encontra aqui.
+     */
+
+    // A partida que deve saber o tamanho do tabuleiro.
     final private int SIZE = 8;
     private int turn;
     private Color currentPlayer;
@@ -50,6 +55,9 @@ public class ChessMatch {
     public Color getCurrentPlayer(){
         return this.currentPlayer;
     }
+    public boolean isCheckMate(){
+        return isCheckMate;
+    }
     private Color opponent(Color color){
         return color.equals(Color.YELLOW) ? Color.GREEN : Color.YELLOW;
     }
@@ -61,7 +69,7 @@ public class ChessMatch {
                 return (ChessPiece) p;
             }
         }
-        throw new IllegalStateException("THERE IS NO KING " + color + " IN THIS BOARD. IS CHESS A REPLUBIC NOW?");
+        throw new IllegalStateException("THERE IS NO KING " + color + " IN THIS BOARD. IS CHESS A REPUBLIC NOW?");
     }
     // Verifica se o rei dessa cor está em check
     private boolean testCheck(Color color){
@@ -74,9 +82,35 @@ public class ChessMatch {
         }
         return false;
     }
+    public boolean testCheckMate(Color color){
+        List<Piece> list = piecesOnTheBoard.stream().filter(x->((ChessPiece) x).getColor().equals(color)).collect(Collectors.toList());
+        if(!testCheck(color)){
+            return false;
+        }
+        for(Piece p : list){
+            boolean[][] allyMovements = p.possibleMoves();
+            for(int i = 0; i < SIZE; i++){
+                for(int c = 0; c < SIZE; c++){
+                    if(allyMovements[i][c]){
+                        Position source = ((ChessPiece) p).getChessPosition().toPosition();
+                        Position target = new Position(i,c);
+                        Piece capturedPiece = makeMove(source,target);
+                        boolean testCheck = testCheck(color);
+                        undoMove(source, target,capturedPiece);
+                        // o movimento tira o rei do xeque
+                        if(!testCheck){
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
     // Feito para que o programa conheça apenas a chesslayer, por isso
     // O downcast para ChessPiece
     // Como tudo é null, o downcast não causará uma excessão de castClassException
+    // Isso é em prol do desenvolvimento em camadas. A partida deve conhecer apenas coisas da camada de xadre (chesslayer)
     public ChessPiece[][] getPieces(){
         ChessPiece[][] matrix = new ChessPiece[board.getRows()][board.getColumns()];
         for(int i = 0; i < board.getRows(); i++){
@@ -95,7 +129,7 @@ public class ChessMatch {
         validateSourcePosition(sourcePosition.toPosition());
         validateTargetPosition(sourcePosition.toPosition(),targetPosition.toPosition());
         Piece capturedPiece = makeMove(sourcePosition.toPosition(), targetPosition.toPosition());
-        // checa se o seu movimento te põe em cheque
+        // checa se o movimento feito pelo jogador se põe em xeque
         if(testCheck(getCurrentPlayer())){
             undoMove(sourcePosition.toPosition(), targetPosition.toPosition(), capturedPiece);
             throw new ChessException("Error moving chess piece: Your " + getCurrentPlayer() + " king would be in check. Illegal movement.");
@@ -104,7 +138,12 @@ public class ChessMatch {
         // se for true, então a partida está em xeque
         isCheck = testCheck(opponent(getCurrentPlayer()));
 
-        nextTurn();
+        if(testCheckMate(opponent(currentPlayer))){
+            isCheckMate = true;
+        }
+        else{
+            nextTurn();
+        }
         return (ChessPiece) capturedPiece;
     }
     public Piece makeMove(Position sourcePosition, Position targetPosition){
@@ -155,19 +194,11 @@ public class ChessMatch {
     }
     // Inicia a partida colocando as peças
     private void initialSetup(){
-        placeNewPieceAsChessPosition('c', 2, new Rook(board, Color.YELLOW));
-        placeNewPieceAsChessPosition('c', 1, new Rook(board, Color.YELLOW));
-        placeNewPieceAsChessPosition('d', 2, new Rook(board, Color.YELLOW));
-        placeNewPieceAsChessPosition('e', 2, new Rook(board, Color.YELLOW));
-        placeNewPieceAsChessPosition('e', 1, new Rook(board, Color.YELLOW));
-        placeNewPieceAsChessPosition('d', 1, new King(board, Color.YELLOW));
+        placeNewPieceAsChessPosition('h', 7, new Rook(board, Color.YELLOW));
+        placeNewPieceAsChessPosition('d', 1, new Rook(board, Color.YELLOW));
+        placeNewPieceAsChessPosition('e', 1, new King(board, Color.YELLOW));
 
-        placeNewPieceAsChessPosition('c', 7, new Rook(board, Color.GREEN));
-        placeNewPieceAsChessPosition('c', 8, new Rook(board, Color.GREEN));
-        placeNewPieceAsChessPosition('d', 7, new Rook(board, Color.GREEN));
-        placeNewPieceAsChessPosition('e', 7, new Rook(board, Color.GREEN));
-        placeNewPieceAsChessPosition('e', 8, new Rook(board, Color.GREEN));
-        placeNewPieceAsChessPosition('d', 8, new King(board, Color.GREEN));
-
+        placeNewPieceAsChessPosition('b', 8, new Rook(board, Color.GREEN));
+        placeNewPieceAsChessPosition('a', 8, new King(board, Color.GREEN));
     }
 }

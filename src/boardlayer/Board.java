@@ -3,6 +3,11 @@ package boardlayer;
 import boardlayer.exceptions.BoardException;
 
 public class Board {
+    /*
+    Essa classe representa o tabuleiro como conhecemos, isto é, uma matriz bidimensional, começando em 0 até n-1.
+
+    OOP: Associação -> Board tem vários Piece, Encapsulamento (privates)
+     */
     private Integer rows;
     private Integer columns;
     private Piece[][] pieces;
@@ -37,6 +42,7 @@ public class Board {
         return pieces;
     }
 
+    // Retorna a peça na posição escolhida
     public Piece piece(int row, int col) {
         if (!positionExists(row, col)) {
             throw new BoardException("Error accessing piece: position does not exist");

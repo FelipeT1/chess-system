@@ -11,6 +11,9 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class UI {
+    /*
+    Essa classe é responsável pela saída de dados. UI -> User interface
+     */
     // https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
 
     // códigos para cores
@@ -69,14 +72,22 @@ public class UI {
         printBoard(chessMatch.getPieces());
         printCapturedPieces(capturedPieces);
         System.out.printf("Turno: %d\n", chessMatch.getTurn());
-        if(chessMatch.isCheck()){
+
+        if(!chessMatch.isCheckMate())
+        {
+            if(chessMatch.isCheck()){
             System.out.println("JOGADOR " + chessMatch.getCurrentPlayer() +  " CHECK!");
-        }
-        if(chessMatch.getCurrentPlayer().equals(Color.YELLOW)){
+            }
+            if(chessMatch.getCurrentPlayer().equals(Color.YELLOW)){
             System.out.printf(ANSI_YELLOW + "Player : %s\n", chessMatch.getCurrentPlayer() + ANSI_RESET);
+            }
+            else{
+            System.out.printf(ANSI_GREEN + "Player : %s\n", chessMatch.getCurrentPlayer() + ANSI_RESET);
+            }
         }
         else{
-            System.out.printf(ANSI_GREEN + "Player : %s\n", chessMatch.getCurrentPlayer() + ANSI_RESET);
+            System.out.println("CHECKMATE!");
+            System.out.println("Winner: " + chessMatch.getCurrentPlayer());
         }
     }
     public static void printBoard(ChessPiece[][] pieces){

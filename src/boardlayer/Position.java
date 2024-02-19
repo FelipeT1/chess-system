@@ -1,6 +1,13 @@
 package boardlayer;
 
 public class Position {
+
+    /*
+    Essa classe representa a posição da peça dentro da tabela. É representada por linha, coluna. Ambos inteiros.
+
+    OOP: Encapsulamento (os campos private), Construtor e Sobrecarga (Override no ToString()).
+     */
+
     private Integer row;
     private Integer col;
 
