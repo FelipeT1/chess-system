@@ -61,29 +61,29 @@ public class King extends ChessPiece {
         if(getBoard().positionExists(p) && canMove(p)){
             moves[p.getRow()][p.getCol()] = true;
         }
+        if(getMoveCount() == 0 && !chessMatch.isCheck()){
+            // #Special move - Roque = Castling
+            // Small castling
+            Position posT1 = new Position(position.getRow(), position.getCol() + 3);
+            if (testIfRookIsCastling(posT1)) {
+                Position p1 = new Position(position.getRow(), position.getCol() + 1);
+                Position p2 = new Position(position.getRow(), position.getCol() + 2);
+                if (!getBoard().thereIsAPiece(p1) && !getBoard().thereIsAPiece(p2)) {
+                    moves[position.getRow()][position.getCol() + 2] = true;
+                }
 
-        // #Special move - Roque = Castling
-        // Small castling
-        p.setValues(position.getRow(), position.getCol() + 3);
-        if(testIfRookIsCastling(p)){
-            Position p1 = new Position(position.getRow(), position.getCol() + 1);
-            Position p2 = new Position(position.getRow(), position.getCol() + 2);
-            if(!getBoard().thereIsAPiece(p1) && !getBoard().thereIsAPiece(p2)){
-                moves[position.getRow()][position.getCol() + 2] = true;
             }
+            // Big castling
+            Position posT2 = new Position(position.getRow(), position.getCol() - 4);
+            if (testIfRookIsCastling(posT2)) {
+                Position p1 = new Position(position.getRow(), position.getCol() - 1);
+                Position p2 = new Position(position.getRow(), position.getCol() - 2);
+                Position p3 = new Position(position.getRow(), position.getCol() - 3);
+                if (!getBoard().thereIsAPiece(p1) && !getBoard().thereIsAPiece(p2) && !getBoard().thereIsAPiece(p3)) {
+                    moves[position.getRow()][position.getCol() - 2] = true;
+                }
 
-        }
-
-        // Big castling
-        p.setValues(position.getRow(), position.getCol() - 4);
-        if(testIfRookIsCastling(p)){
-            Position p1 = new Position(position.getRow(), position.getCol() - 1);
-            Position p2 = new Position(position.getRow(), position.getCol() - 2);
-            Position p3 = new Position(position.getRow(), position.getCol() - 3);
-            if(!getBoard().thereIsAPiece(p1) && !getBoard().thereIsAPiece(p2) && !getBoard().thereIsAPiece(p3)){
-                moves[position.getRow()][position.getCol() - 2] = true;
             }
-
         }
         return moves;
     }

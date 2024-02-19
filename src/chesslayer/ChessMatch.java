@@ -154,6 +154,25 @@ public class ChessMatch {
             piecesOnTheBoard.remove(capturedPiece);
         }
         board.placePiece(pieceToBeMoved, targetPosition);
+
+        // #Special Move - Small Castling - Roque Menor -
+        if(pieceToBeMoved instanceof King && targetPosition.getCol() == sourcePosition.getCol() + 2){
+            Position sourceRook = new Position(sourcePosition.getRow(), sourcePosition.getCol() + 3);
+            Position targetRook = new Position(sourcePosition.getRow(), sourcePosition.getCol() + 1);
+            ChessPiece rook = (ChessPiece) board.removePiece(sourceRook);
+            board.placePiece(rook, targetRook);
+            rook.increaseMoveCount();
+
+        }
+        // #Special Move - Big Castling - Roque Maior -
+        else if(pieceToBeMoved instanceof King && targetPosition.getCol() == sourcePosition.getCol() - 2){
+            Position sourceRook = new Position(sourcePosition.getRow(), sourcePosition.getCol() - 4);
+            Position targetRook = new Position(sourcePosition.getRow(), sourcePosition.getCol() - 1);
+            ChessPiece rook = (ChessPiece) board.removePiece(sourceRook);
+            board.placePiece(rook, targetRook);
+            rook.increaseMoveCount();
+
+        }
         return capturedPiece;
     }
     // Se uma jogada colocar seu Rei em Xeque esta deve ser desfeita
@@ -166,6 +185,23 @@ public class ChessMatch {
             board.placePiece(capturedPiece, targetPosition);
             piecesOnTheBoard.add(capturedPiece);
             capturedPieces.remove(capturedPiece);
+        }
+
+        // #Special Move - Small Castling - Roque Menor -
+        if(p instanceof King && targetPosition.getCol() == sourcePosition.getCol() + 2){
+            Position sourceRook = new Position(sourcePosition.getRow(), sourcePosition.getCol() + 3);
+            Position targetRook = new Position(sourcePosition.getRow(), sourcePosition.getCol() + 1);
+            ChessPiece rook = (ChessPiece) board.removePiece(targetRook);
+            rook.decreaseMoveCount();
+            board.placePiece(rook, sourceRook);
+        }
+        // #Special Move - Big Castling - Roque Maior -
+        else if(p instanceof King && targetPosition.getCol() == sourcePosition.getCol() - 2){
+            Position sourceRook = new Position(sourcePosition.getRow(), sourcePosition.getCol() - 4);
+            Position targetRook = new Position(sourcePosition.getRow(), sourcePosition.getCol() - 1);
+            ChessPiece rook = (ChessPiece) board.removePiece(targetRook);
+            rook.decreaseMoveCount();
+            board.placePiece(rook, sourceRook);
         }
     }
     public void validateSourcePosition(Position position){
@@ -208,12 +244,7 @@ public class ChessMatch {
         placeNewPieceAsChessPosition('h', 2, new Pawn(board, Color.YELLOW));
 
         placeNewPieceAsChessPosition('a', 8, new Rook(board, Color.GREEN));
-        placeNewPieceAsChessPosition('b', 8, new Knight(board, Color.GREEN));
-        placeNewPieceAsChessPosition('c', 8, new Bishop(board, Color.GREEN));
         placeNewPieceAsChessPosition('e', 8, new King(board, Color.GREEN, this));
-        placeNewPieceAsChessPosition('d', 8, new Queen(board, Color.GREEN));
-        placeNewPieceAsChessPosition('f', 8, new Bishop(board, Color.GREEN));
-        placeNewPieceAsChessPosition('g', 8, new Knight(board, Color.GREEN));
         placeNewPieceAsChessPosition('h', 8, new Rook(board, Color.GREEN));
         placeNewPieceAsChessPosition('a', 7, new Pawn(board, Color.GREEN));
         placeNewPieceAsChessPosition('b', 7, new Pawn(board, Color.GREEN));
