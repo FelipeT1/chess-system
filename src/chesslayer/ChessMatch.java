@@ -5,6 +5,7 @@ import boardlayer.Piece;
 import boardlayer.Position;
 import chesslayer.enums.Color;
 import chesslayer.exceptions.ChessException;
+import chesslayer.pieces.Bishop;
 import chesslayer.pieces.King;
 import chesslayer.pieces.Pawn;
 import chesslayer.pieces.Rook;
@@ -198,7 +199,9 @@ public class ChessMatch {
     // Inicia a partida colocando as peças
     private void initialSetup(){
         placeNewPieceAsChessPosition('a', 1, new Rook(board, Color.YELLOW));
+        placeNewPieceAsChessPosition('c', 1, new Bishop(board, Color.YELLOW));
         placeNewPieceAsChessPosition('e', 1, new King(board, Color.YELLOW));
+        placeNewPieceAsChessPosition('f', 1, new Bishop(board, Color.YELLOW));
         placeNewPieceAsChessPosition('h', 1, new Rook(board, Color.YELLOW));
         placeNewPieceAsChessPosition('a', 2, new Pawn(board, Color.YELLOW));
         placeNewPieceAsChessPosition('b', 2, new Pawn(board, Color.YELLOW));
@@ -210,15 +213,11 @@ public class ChessMatch {
         placeNewPieceAsChessPosition('h', 2, new Pawn(board, Color.YELLOW));
 
         placeNewPieceAsChessPosition('a', 8, new Rook(board, Color.GREEN));
+        placeNewPieceAsChessPosition('c', 8, new Bishop(board, Color.GREEN));
         placeNewPieceAsChessPosition('e', 8, new King(board, Color.GREEN));
+        placeNewPieceAsChessPosition('f', 8, new Bishop(board, Color.GREEN));
         placeNewPieceAsChessPosition('h', 8, new Rook(board, Color.GREEN));
         placeNewPieceAsChessPosition('a', 7, new Pawn(board, Color.GREEN));
         placeNewPieceAsChessPosition('b', 7, new Pawn(board, Color.GREEN));
-        placeNewPieceAsChessPosition('c', 7, new Pawn(board, Color.GREEN));
-        placeNewPieceAsChessPosition('d', 7, new Pawn(board, Color.GREEN));
-        placeNewPieceAsChessPosition('e', 7, new Pawn(board, Color.GREEN));
-        placeNewPieceAsChessPosition('f', 7, new Pawn(board, Color.GREEN));
-        placeNewPieceAsChessPosition('g', 7, new Pawn(board, Color.GREEN));
-        placeNewPieceAsChessPosition('h', 7, new Pawn(board, Color.GREEN));
     }
 }
