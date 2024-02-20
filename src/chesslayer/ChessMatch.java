@@ -7,6 +7,7 @@ import chesslayer.enums.Color;
 import chesslayer.exceptions.ChessException;
 import chesslayer.pieces.*;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +40,10 @@ public class ChessMatch {
 
     public ChessPiece getEnPassantVulnerable() {
         return enPassantVulnerable;
+    }
+
+    public ChessPiece getPromoted() {
+        return promoted;
     }
 
     public boolean isCheck() {
@@ -137,12 +142,26 @@ public class ChessMatch {
             undoMove(sourcePosition.toPosition(), targetPosition.toPosition(), capturedPiece);
             throw new ChessException("Error moving chess piece: Your " + getCurrentPlayer() + " king would be in check. Illegal movement.");
         }
+
+
+        ChessPiece movedPiece = (ChessPiece) board.piece(targetPosition.toPosition());
+
+        // #Special Move Promotion
+        promoted = null;
+
+        if (movedPiece instanceof Pawn) {
+            if( (movedPiece.getColor().equals(Color.YELLOW) && targetPosition.toPosition().getRow() == 0) ){
+                promoted = (ChessPiece) board.piece(targetPosition.toPosition());
+                // Por padrão é a rainha
+                promoted = replacePromotedPiece("Q");
+            }
+        }
+
+
         // checa se o oponente ficou em xeque
         // se for true, então a partida está em xeque
         isCheck = testCheck(opponent(getCurrentPlayer()));
 
-        // #Special Move EnPassant
-        ChessPiece enPassantPiece = (ChessPiece) board.piece(targetPosition.toPosition());
 
         if(testCheckMate(opponent(currentPlayer))){
             isCheckMate = true;
@@ -151,8 +170,8 @@ public class ChessMatch {
             nextTurn();
         }
         // #Special Move vunerável ao enpassant
-        if(enPassantPiece instanceof Pawn && sourcePosition.getRow() == targetPosition.getRow() + 2 || sourcePosition.getRow() == targetPosition.getRow() - 2){
-            enPassantVulnerable = enPassantPiece;
+        if(movedPiece instanceof Pawn && sourcePosition.getRow() == targetPosition.getRow() + 2 || sourcePosition.getRow() == targetPosition.getRow() - 2){
+            enPassantVulnerable = movedPiece;
         }
         else{
             // não há ninguém vulnerável no prox turno ao en passant
@@ -160,6 +179,32 @@ public class ChessMatch {
         }
 
         return (ChessPiece) capturedPiece;
+    }
+
+    public ChessPiece replacePromotedPiece(String type){
+        // Se a peça promovida for nula não há como promover
+        if(promoted == null){
+            throw  new IllegalStateException("Error in promotion: There is no piece for promotion");
+        }
+        if (!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")) {
+            throw new InvalidParameterException("Error in promotion: Invalid type for promotion");
+        }
+        Position promotedPiecePosition = promoted.getChessPosition().toPosition();
+        Piece p = board.removePiece(promotedPiecePosition);
+        piecesOnTheBoard.remove(p);
+
+        ChessPiece newPiece = promotePiece(type, promoted.getColor());
+        board.placePiece(newPiece, promotedPiecePosition);
+        piecesOnTheBoard.add(newPiece);
+
+        return newPiece;
+    }
+
+    private ChessPiece promotePiece(String type, Color color){
+        if (type.equals("B")) return new Bishop(board, color);
+        if (type.equals("N")) return new Knight(board, color);
+        if (type.equals("Q")) return new Queen(board, color);
+        return new Rook(board, color);
     }
     public Piece makeMove(Position sourcePosition, Position targetPosition){
         Piece pieceToBeMoved = board.removePiece(sourcePosition);
