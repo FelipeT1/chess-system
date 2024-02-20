@@ -9,7 +9,7 @@
 <h3 align="center">Chess System</h3>
 
   <p align="center">
-    A program that simulates a chess match with the basicrules  and some special plays (Castling, Promotion and En Passant) implemented. 
+    A program that simulates a chess match with the basic rules  and some special plays (Castling, Promotion and En Passant) implemented. 
   </p>
 </div>
 
