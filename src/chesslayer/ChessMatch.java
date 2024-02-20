@@ -150,9 +150,8 @@ public class ChessMatch {
         promoted = null;
 
         if (movedPiece instanceof Pawn) {
-            if( (movedPiece.getColor().equals(Color.YELLOW) && targetPosition.toPosition().getRow() == 0) ){
-                promoted = (ChessPiece) board.piece(targetPosition.toPosition());
-                // Por padrão é a rainha
+            if ((movedPiece.getColor() == Color.YELLOW && targetPosition.toPosition().getRow() == 0) || (movedPiece.getColor() == Color.GREEN && targetPosition.toPosition().getRow() == 7)) {
+                promoted = (ChessPiece)board.piece(targetPosition.toPosition());
                 promoted = replacePromotedPiece("Q");
             }
         }
@@ -170,7 +169,7 @@ public class ChessMatch {
             nextTurn();
         }
         // #Special Move vunerável ao enpassant
-        if(movedPiece instanceof Pawn && sourcePosition.getRow() == targetPosition.getRow() + 2 || sourcePosition.getRow() == targetPosition.getRow() - 2){
+        if(movedPiece instanceof Pawn && sourcePosition.toPosition().getRow() == targetPosition.toPosition().getRow() + 2 || sourcePosition.toPosition().getRow() == targetPosition.toPosition().getRow() - 2){
             enPassantVulnerable = movedPiece;
         }
         else{
