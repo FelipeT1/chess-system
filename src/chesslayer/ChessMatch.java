@@ -7,7 +7,6 @@ import chesslayer.enums.Color;
 import chesslayer.exceptions.ChessException;
 import chesslayer.pieces.*;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -184,9 +183,6 @@ public class ChessMatch {
         // Se a peça promovida for nula não há como promover
         if(promoted == null){
             throw  new IllegalStateException("Error in promotion: There is no piece for promotion");
-        }
-        if (!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")) {
-            throw new InvalidParameterException("Error in promotion: Invalid type for promotion");
         }
         Position promotedPiecePosition = promoted.getChessPosition().toPosition();
         Piece p = board.removePiece(promotedPiecePosition);
